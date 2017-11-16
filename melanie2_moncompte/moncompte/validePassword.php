@@ -33,11 +33,35 @@ class validePassword {
 		$new_pwd2 = trim(rcube_utils::get_input_value('_changepassword_newpassword_confirm', rcube_utils::INPUT_POST));
 
 		if ($new_pwd == $new_pwd2) {
-
-			$config_serveurws = rcmail::get_instance()->config->get('ws_changepass');
-			$client_chpwd = new \SoapClient($config_serveurws, array("cache_wsdl" => WSDL_CACHE_NONE));
-
-			try {
+		  try {
+		    
+  			// Récupération des certificats depuis la conf
+  		  $wsamande_cacert = rcmail::get_instance()->config->get('ws_amande_cacert', null);
+  		  $wsamande_verify_peer = rcmail::get_instance()->config->get('ws_amande_verify_peer', true);
+  		  // Configuration SSL pour le WS
+  		  $ssl_config = array(
+  		      'ssl' => array(
+  		          'verify_peer'       => $wsamande_verify_peer,
+  		          'verify_peer_name'  => $wsamande_verify_peer,
+  		          'allow_self_signed' => true
+  		      )
+  		  );
+  		  if (isset($wsamande_cacert)) {
+  		    $ssl_config['ssl']['cafile'] = $wsamande_cacert;
+  		  }
+  			// Stream context pour les problèmes de certificat
+  		  $streamContext = stream_context_create($ssl_config);
+  			// Récupération de l'url de ws depuis la conf
+  			$config_serveurws = rcmail::get_instance()->config->get('ws_changepass');
+  			// Connexion à WS Amande
+  			$client_chpwd = new \SoapClient(
+  			    $config_serveurws, 
+  			    array(
+  			        "cache_wsdl" => WSDL_CACHE_NONE,
+  			        'stream_context'  =>  $streamContext,
+  			    )
+  	    );
+			
 				// Appel a la méthode de modification du mot de passe
 				$ret = $client_chpwd->changePasswordMelanie2($user_name, $old_pwd, $new_pwd, true);
 				if ($ret->code === 0) {

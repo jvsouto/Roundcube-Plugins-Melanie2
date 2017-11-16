@@ -367,7 +367,7 @@ class M2calendar {
    * Handler for ACL form template object
    */
   public function acl_form() {
-    $calid = get_input_value('_id', RCUBE_INPUT_GPC);
+    $calid = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
     $options = array('type' => 'm2calendar','name' => $calid,'attributes' => array(0 => '\\HasNoChildren'),'namespace' => 'personal','special' => false,'rights' => array(0 => 'l',1 => 'r',2 => 's',3 => 'w',4 => 'i',5 => 'p',6 => 'k',7 => 'x',8 => 't',9 => 'e',10 => 'c',11 => 'd',12 => 'a'),'norename' => false,'noselect' => false,'protected' => true);
 
     $form = array();
@@ -388,7 +388,7 @@ class M2calendar {
    * @return string
    */
   public function acl_frame($attrib) {
-    $id = get_input_value('_id', RCUBE_INPUT_GPC);
+    $id = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
     if (! $attrib['id'])
       $attrib['id'] = 'rcmusersaclframe';
 
@@ -430,7 +430,7 @@ class M2calendar {
     if (! $attrib['id'])
       $attrib['id'] = 'rcmExportForm';
 
-    $id = get_input_value('_id', RCUBE_INPUT_GPC);
+    $id = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
     $hidden = new html_hiddenfield(array('name' => 'calendar','id' => 'event-export-calendar','value' => $id));
     $html .= $hidden->show();
 
@@ -478,7 +478,7 @@ class M2calendargroup extends M2calendar {
    * Handler for ACL form template object
    */
   public function acl_form() {
-    $calid = get_input_value('_id', RCUBE_INPUT_GPC);
+    $calid = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
     $options = array('type' => 'm2calendargroup','name' => $calid,'attributes' => array(0 => '\\HasNoChildren'),'namespace' => 'personal','special' => false,'rights' => array(0 => 'l',1 => 'r',2 => 's',3 => 'w',4 => 'i',5 => 'p',6 => 'k',7 => 'x',8 => 't',9 => 'e',10 => 'c',11 => 'd',12 => 'a'),'norename' => false,'noselect' => false,'protected' => true);
 
     $form = array();
@@ -499,7 +499,7 @@ class M2calendargroup extends M2calendar {
    * @return string
    */
   public function acl_frame($attrib) {
-    $id = get_input_value('_id', RCUBE_INPUT_GPC);
+    $id = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
     if (! $attrib['id'])
       $attrib['id'] = 'rcmusersaclframe';
 

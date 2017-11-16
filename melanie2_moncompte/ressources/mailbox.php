@@ -266,7 +266,7 @@ class M2mailbox {
    * Handler for ACL form template object
    */
   public function acl_form() {
-    $balid = get_input_value('_id', RCUBE_INPUT_GPC);
+    $balid = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
     $options = array('type' => 'm2mailbox','name' => $balid,'attributes' => array(0 => '\\HasNoChildren'),'namespace' => 'personal','special' => false,'rights' => array(0 => 'l',1 => 'r',2 => 's',3 => 'w',4 => 'i',5 => 'p',6 => 'k',7 => 'x',8 => 't',9 => 'e',10 => 'c',11 => 'd',12 => 'a'),'norename' => false,'noselect' => false,'protected' => true);
 
     $form = array();
@@ -287,7 +287,7 @@ class M2mailbox {
    * @return string
    */
   public function acl_frame($attrib) {
-    $id = get_input_value('_id', RCUBE_INPUT_GPC);
+    $id = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
     if (! $attrib['id'])
       $attrib['id'] = 'rcmusersaclframe';
 
@@ -303,34 +303,42 @@ class M2mailbox {
 
   public function restore_bal($attrib) {
 
-    $id = get_input_value('_id', RCUBE_INPUT_GPC);
+    $id = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
     $id = str_replace("_-P-_", ".", $id);
 
     if (strpos($id, '.-.') !== false) {
       $tmp = explode('.-.', $id, 2);
       $id = $tmp[1];
     }
-
-    $infos = melanie2::get_user_infos($id);
-
+    
     $folders = array();
     $imap = new rcube_imap();
-
-    if (isset($infos) && isset($infos['mineqmelroutage']) && count($infos['mineqmelroutage']) > 0) {
-      // MANTIS 3925: mineqMelRoutage multivalué
-      foreach ($infos['mineqmelroutage'] as $melroutage) {
-        $host = null;
-        if (strpos($melroutage, '%') !== false) {
-          $tmp = explode('@', $melroutage);
-          $host = $tmp[1];
-          break;
-        }
-      }
-      if (isset($host)) {
-        $imap->connect($host, $id, $this->rc->get_user_password(), 993, 'ssl');
+    
+    if ($id == $this->rc->get_user_name()) {
+      if ($imap->connect($this->rc->user->get_username('domain'), $id, $this->rc->get_user_password(), 993, 'ssl')) {
         $folders = $imap->list_folders_direct();
       }
     }
+    else {
+      $infos = melanie2::get_user_infos($id);
+      if (isset($infos) && isset($infos['mineqmelroutage']) && count($infos['mineqmelroutage']) > 0) {
+        // MANTIS 3925: mineqMelRoutage multivalué
+        foreach ($infos['mineqmelroutage'] as $melroutage) {
+          $host = null;
+          if (strpos($melroutage, '%') !== false) {
+            $tmp = explode('@', $melroutage);
+            $host = $tmp[1];
+            break;
+          }
+        }
+        if (isset($host)) {
+          $imap->connect($host, $id, $this->rc->get_user_password(), 993, 'ssl');
+          $folders = $imap->list_folders_direct();
+        }
+      }
+    }
+   
+    
 
     $html = '';
     $input = new html_inputfield(array('name' => 'nbheures','size' => '2'));
@@ -370,7 +378,7 @@ class M2mailbox {
 
       $nbheures = intval($nbheures);
 
-      $id = get_input_value('_id', RCUBE_INPUT_GPC);
+      $id = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
       $id = str_replace("_-P-_", ".", $id);
 
       if (strpos($id, '.-.') !== false) {

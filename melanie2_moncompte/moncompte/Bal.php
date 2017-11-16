@@ -76,70 +76,38 @@ class Bal {
 	{
 
 		// Liste des attributs de l'utilisateur Ã  lire
-		$ldap_attrs = array(
-		 'cn',
-		 'mineqpassworddoitchanger',
-		 'mineqmelpartages',
-	     'mineqmelreponse',
-	     'mineqtypeentree',
-	     'mineqmelaccesinterneta',
-	     'mineqmelaccesinternetu',
-	     'mineqPublicationPhotoAder',        // 02/02/10
-	     'mineqPublicationPhotoIntranet',    // 02/02/10
-	     'employeenumber',    // 24/08/10
-	     'mineqzone',         // 24/08/10
-	     'street',         // 24/08/10
-	     'postalcode',         // 24/08/10
-	     'l',         // 24/08/10
-	     'info',         // 24/08/10
-	     'description',         // 24/08/10
-	     'telephonenumber',         // 24/08/10
-	     'facsimiletelephonenumber',         // 24/08/10
-	     'mobile',         // 24/08/10
-	     'roomnumber',         // 24/08/10
-	     'title',         // 24/08/10
-	     'businesscategory',         // 24/08/10
-	     'mineqvpnprofil',         // 24/08/10
-	     'sambasid',         // 24/08/10
-	     'mineqmajinfoperso',         // 24/08/10
-	     'mineqmelremise',          //12/12/12
-	     'mineqmelaccessynchroa',	//05/02/13
-	     'mineqmelaccessynchrou',	//05/02/13
-	     'mineqmission',
-		 'jpegphoto',
-		 'gender');         // 24/08/10
-
+		$ldap_attrs = $this->rc->config->get('ldap_attributes');
 
 		if (Ldap::Authentification(Moncompte::get_current_user_name(), $this->rc->get_user_password())) {
 
-			$filter = Ldap::GetInstance(Config::$AUTH_LDAP)->getConfig('get_user_infos_filter');
+			$filter = Ldap::GetInstance(Config::$MASTER_LDAP)->getConfig('get_user_infos_filter');
 			$filter = str_replace('%%username%%',Moncompte::get_current_user_name(), $filter);
 
-			$base_dn = Ldap::GetInstance(Config::$AUTH_LDAP)->getConfig('base_dn');
+			$base_dn = Ldap::GetInstance(Config::$MASTER_LDAP)->getConfig('base_dn');
 
-			$ldap_res = Ldap::GetInstance(Config::$AUTH_LDAP)->search($base_dn, $filter, $ldap_attrs);
+			$ldap_res = Ldap::GetInstance(Config::$MASTER_LDAP)->search($base_dn, $filter, $ldap_attrs);
 
-			$_ldapEntree = Ldap::GetInstance(Config::$AUTH_LDAP)->get_entries($ldap_res);
+			$_ldapEntree = Ldap::GetInstance(Config::$MASTER_LDAP)->get_entries($ldap_res);
 		}
 
 		if (melanie2_logs::is(melanie2_logs::TRACE)) melanie2_logs::get_instance()->log(melanie2_logs::TRACE, var_export($_ldapEntree[0], true));
 
 		// nomenclatures mineqZone et mineqVpnProfil
 
-		if (isset($_ldapEntree[0]['mineqvpnprofil'][0])) {
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_vpnprofil')][0])) {
 
 			$baseDNVPN = 'ou=mineqVpnProfil,ou=nomenclatures,ou=ressources,dc=equipement,dc=gouv,dc=fr';
-			$filtre_vpn = 'mineqvpnprofil=' . $_ldapEntree[0]['mineqvpnprofil'][0];
+			$filtre_vpn = 'mineqvpnprofil=' . $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_vpnprofil')][0];
 
 			$search_vpn = Ldap::GetInstance(Config::$MASTER_LDAP)->search($baseDNVPN, $filtre_vpn, array('description'));
 			$nom_vpn = Ldap::GetInstance(Config::$MASTER_LDAP)->get_entries($search_vpn);
 
 		}
 
-		if (isset($_ldapEntree[0]['mineqzone'][0])) {
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_zone')][0])) {
 
 			$baseDNZone = 'ou=mineqZone,ou=nomenclatures,ou=ressources,dc=equipement,dc=gouv,dc=fr';
-			$filtre_zone = 'mineqzone=' . $_ldapEntree[0]['mineqzone'][0];
+			$filtre_zone = 'mineqzone=' . $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_zone')][0];
 
 			$search_zone = Ldap::GetInstance(Config::$MASTER_LDAP)->search($baseDNZone, $filtre_zone, array('description'));
 			$nom_zone = Ldap::GetInstance(Config::$MASTER_LDAP)->get_entries($search_zone);
@@ -151,66 +119,66 @@ class Bal {
 
 		// Recuperer les messages d'absence pour les destinataires mel et int
 		for ($i = 0; $i < 2; $i++) {
-			if (isset($_ldapEntree[0]['mineqmelreponse'][$i])) {
+			if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_response')][$i])) {
 				// PAMELA 26/06/09 stripos -> strpos et rajouter ' ' et :
-				if ( strpos($_ldapEntree[0]['mineqmelreponse'][$i],
+				if ( strpos($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_response')][$i],
 						' RAIN:') === false)  {
 						// RAEX: renseigner message absence destinataires externes
 				$this->_balAbsence->setInfoInternet($_ldapEntree[0]
-						['mineqmelreponse']
+						[Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_response')]
 						[$i]);
 				}
 				else
 				{
 					// RAIN: renseigner message absence destinataires internes
 					$this->_balAbsence->setInfoMelanie ($_ldapEntree[0]
-							['mineqmelreponse']
+							[Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_response')]
 							[$i]);
 				}
 			}
 		}
 
-		if (isset($_ldapEntree[0]['mineqmelaccesinterneta'][0])) {
-			$this->_accesInternetAdmin = $_ldapEntree[0]['mineqmelaccesinterneta'][0];
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_accesinterneta')][0])) {
+			$this->_accesInternetAdmin = $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_accesinterneta')][0];
 		}
 
-		if (isset($_ldapEntree[0]['mineqmelaccesinternetu'][0])) {
-		$this->_accesInternetUser = $_ldapEntree[0]['mineqmelaccesinternetu'][0];
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_accesinternetu')][0])) {
+		$this->_accesInternetUser = $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_accesinternetu')][0];
 		}
 
 		// 02/02/10 Publication des photos Ader et Intranet
-		if (isset($_ldapEntree[0]['mineqpublicationphotoader'][0])) {
-			$this->_publicationPhotoAder = $_ldapEntree[0]['mineqpublicationphotoader'][0];
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_photo_publiader')][0])) {
+			$this->_publicationPhotoAder = $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_photo_publiader')][0];
 		}
 
-		if (isset($_ldapEntree[0]['mineqpublicationphotointranet'][0])) {
-		$this->_publicationPhotoIntranet = $_ldapEntree[0]['mineqpublicationphotointranet'][0];
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_photo_publiintra')][0])) {
+		$this->_publicationPhotoIntranet = $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_photo_publiintra')][0];
 		}
 
 		// 24/08/10 infos perso -------------------------
 
 		/* Autorisation de modifier les infos ? */
-		if (isset($_ldapEntree[0]['mineqmajinfoperso'][0])) {
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_majinfoperso')][0])) {
 
-			$this->_autorise = $_ldapEntree[0]['mineqmajinfoperso'][0];
+			$this->_autorise = $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_majinfoperso')][0];
 		}
 
 
 
 
-		if (isset($_ldapEntree[0]['employeenumber'][0])) {
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_employeenumber')][0])) {
 				$this->_matricule = $_ldapEntree[0]
-		['employeenumber']
+		[Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_employeenumber')]
 		[0];
 		}
 
-		if (isset($_ldapEntree[0]['mineqzone'][0])) {
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_zone')][0])) {
 				//             $this->_ministere = $_ldapEntree[0]['mineqzone'][0];
-				$this->_ministere = $nom_zone['0']['description'][0];
+				$this->_ministere = $nom_zone['0'][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_description')][0];
 		}
 
 		if (isset($_ldapEntree[0]['mineqvpnprofil'][0])) {
-			$this->_vpnprofil = $nom_vpn['0']['description'][0];
+			$this->_vpnprofil = $nom_vpn['0'][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_description')][0];
 		}
 
 
@@ -226,41 +194,41 @@ class Bal {
 		$this->_ville = $_ldapEntree[0]['l'][0];
 		}
 
-		if (isset($_ldapEntree[0]['description'][0])) {
-		$this->_description = $_ldapEntree[0]['description'][0];
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_description')][0])) {
+		$this->_description = $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_description')][0];
 		}
 
-		if (isset($_ldapEntree[0]['telephonenumber'][0])) {
-		             $this->_numtel = $_ldapEntree[0]['telephonenumber'][0];
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_phonenumber')][0])) {
+		             $this->_numtel = $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_phonenumber')][0];
 		}
 
-		if (isset($_ldapEntree[0]['facsimiletelephonenumber'][0])) {
-		$this->_numfax = $_ldapEntree[0]['facsimiletelephonenumber'][0];
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_faxnumber')][0])) {
+		$this->_numfax = $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_faxnumber')][0];
 		}
 
-		if (isset($_ldapEntree[0]['mobile'][0])) {
-		$this->_nummobile = $_ldapEntree[0]['mobile'][0];
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mobilephone')][0])) {
+		$this->_nummobile = $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mobilephone')][0];
 		}
 
-		if (isset($_ldapEntree[0]['roomnumber'][0])) {
-		$this->_bureau = $_ldapEntree[0]['roomnumber'][0];
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_roomnumber')][0])) {
+		$this->_bureau = $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_roomnumber')][0];
 		}
 
-		if (isset($_ldapEntree[0]['title'][0])) {
-		$this->_fonction = $_ldapEntree[0]['title'][0];
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_title')][0])) {
+		$this->_fonction = $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_title')][0];
 		}
 
-		if (isset($_ldapEntree[0]['businesscategory'][0])) {
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_businesscat')][0])) {
 			$this->_metier = '';
-			for ($i= 0; $i < $_ldapEntree[0]['businesscategory']['count']; $i++) {
-				$this->_metier .= $_ldapEntree[0]['businesscategory'][$i] . "\n";
+			for ($i= 0; $i < $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_businesscat')]['count']; $i++) {
+				$this->_metier .= $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_businesscat')][$i] . "\n";
 			}
 		}
 
-		if (isset($_ldapEntree[0]['mineqmission'][0])) {
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mission')][0])) {
 			$this->_mission = '';
-			for ($i= 0; $i < $_ldapEntree[0]['mineqmission']['count']; $i++) {
-				$this->_mission .= $_ldapEntree[0]['mineqmission'][$i] . "\n";
+			for ($i= 0; $i < $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mission')]['count']; $i++) {
+				$this->_mission .= $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mission')][$i] . "\n";
 			}
 		}
 
@@ -301,21 +269,21 @@ class Bal {
 			}
 		}
 		// PAMELA 05/02/13 CGU Mobiles
-		if (isset($_ldapEntree[0]['mineqmelaccessynchrou'][0])) {
-		$this->_infoCGUMobts = $_ldapEntree[0]['mineqmelaccessynchrou'][0];
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_accessynchrou')][0])) {
+		$this->_infoCGUMobts = $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_accessynchrou')][0];
 		}
-		if (isset($_ldapEntree[0]['mineqmelaccessynchroa'][0])) {
-			$profilA = explode('Z--', $_ldapEntree[0]['mineqmelaccessynchroa'][0]);
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_accessynchroa')][0])) {
+			$profilA = explode('Z--', $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_accessynchroa')][0]);
 
 		    if (isset($profilA[1])) {
 		    	$this->_getProfilMob = $profilA[1];
 			} else {
-				$this->_getProfilMob = $_ldapEntree[0]['mineqmelaccessynchroa'][0];
+				$this->_getProfilMob = $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_accessynchroa')][0];
 			}
 		}
 		// fin Mobiles -------------
 
-		if (isset($_ldapEntree[0]['sambasid'][0]) && $_ldapEntree[0]['sambasid'][0] !== '') {
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_sambasid')][0]) && $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_sambasid')][0] !== '') {
 
 			$this->_bureautique = true;
 		} else {
@@ -326,10 +294,10 @@ class Bal {
 
 
 
-		if (isset($_ldapEntree[0]['mineqtypeentree'][0])
+		if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_type_entree')][0])
 		//Essai lolo
 		//	&& $_ldapEntree[0]['mineqtypeentree'][0] == "BALI") {
-			&& ($_ldapEntree[0]['mineqtypeentree'][0] == "BALI" || $_ldapEntree[0]['mineqtypeentree'][0] == "PERS"))
+			&& ($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_type_entree')][0] == "BALI" || $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_type_entree')][0] == "PERS"))
 		{
 			$this->_entreeAvecPhoto = 1;
 		} else {
@@ -337,7 +305,7 @@ class Bal {
 	    }
 
 	    //PAMELA 12/12/12 modif gestionnaire absence si bal desactivee
-	    if (isset($_ldapEntree[0]['mineqmelremise'][0]) && $_ldapEntree[0]['mineqmelremise'][0] == 'NULL') {
+	    if (isset($_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_remise')][0]) && $_ldapEntree[0][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_remise')][0] == 'NULL') {
 	    	$this->_balactive = false;
 		} else {
 			$this->_balactive = true;
@@ -345,13 +313,13 @@ class Bal {
 
 		//Publication photo
 
-		if (isset($_ldapEntree['0']['jpegphoto']['0']) && $_ldapEntree['0']['jpegphoto']['0'] !== '') {
+		if (isset($_ldapEntree['0'][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_photo')]['0']) && $_ldapEntree['0'][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_photo')]['0'] !== '') {
 
-			$this->_contenuphoto = "data:image/jpeg;base64," . base64_encode($_ldapEntree['0']['jpegphoto']['0']);
+			$this->_contenuphoto = "data:image/jpeg;base64," . base64_encode($_ldapEntree['0'][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_photo')]['0']);
 
 		} else {
-			if (isset($_ldapEntree['0']['gender']['0']) && !empty($_ldapEntree['0']['gender']['0'])) {
-				$this->_contenuphoto = './fic/avatar' . strtolower($_ldapEntree['0']['gender']['0']) . '.png';
+			if (isset($_ldapEntree['0'][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_gender')]['0']) && !empty($_ldapEntree['0'][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_gender')]['0'])) {
+				$this->_contenuphoto = './fic/avatar' . strtolower($_ldapEntree['0'][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_gender')]['0']) . '.png';
 			} else { $this->_contenuphoto = ''; }
 		}
 
@@ -798,7 +766,7 @@ function getTS()
 		if ($nom_cgu == false) {
 			return '';
 		}
-		return $nom_cgu['0']['description'][0];
+		return $nom_cgu['0'][Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_description')][0];
 	}
 }
 				// fin CGU ---------------------------------------

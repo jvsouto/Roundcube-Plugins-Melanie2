@@ -42,7 +42,7 @@ class valideAbsence {
 		// Message d'absence pour les destinataires internes
 		// MANTIS 3992: Combinsaison "pas de date" et "non activation" mal pris en compte
 
-		$info['mineqMelReponse'][0] = '50~ RAIN:' .
+		$info[Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_response')][0] = '50~ RAIN:' .
 				//((isset($date_deb) && $date_deb != '') ? ' DDEB:' : '') .
 				' DDEB:' .
 				valideAbsence::formatDate($date_deb) .
@@ -56,7 +56,7 @@ class valideAbsence {
 		// DFIN:AAAAMMJJ (actif) ou 0/AAAAMMJJ (non actif)
 		// MANTIS 3992: Combinsaison "pas de date" et "non activation" mal pris en compte
 
-		$info['mineqMelReponse'][1] = '60~ RAEX:' .
+		$info[Ldap::GetInstance(Config::$SEARCH_LDAP)->getMapping('user_mel_response')][1] = '60~ RAEX:' .
 				//((isset($date_deb) && $date_deb != '') ? ' DDEB:' : '') .
 		    ' DDEB:' .
 				valideAbsence::formatDate($date_deb) .

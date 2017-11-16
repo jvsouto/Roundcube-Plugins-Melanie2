@@ -1,6 +1,4 @@
 <?php
-use LibMelanie\Api\Melanie2\Taskslist;
-
 /**
  * Plugin Melanie2 Moncompte
  * plugin melanie2_moncompte pour roundcube
@@ -233,7 +231,7 @@ class melanie2_moncompte extends rcube_plugin {
    * Affichage du template et gestion de la sélection
    */
   public function resources_bal_init() {
-    $id = get_input_value('_id', RCUBE_INPUT_GPC);
+    $id = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
     if (isset($id)) {
       $id = str_replace('_-P-_', '.', $id);
       if (strpos($id, '.-.') !== false) {
@@ -281,7 +279,7 @@ class melanie2_moncompte extends rcube_plugin {
    */
   public function resources_agendas_init() {
     try {
-      $id = get_input_value('_id', RCUBE_INPUT_GPC);
+      $id = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
       if (isset($id)) {
         $id = str_replace('_-P-_', '.', $id);
         // Instancie les objets Mélanie2
@@ -366,7 +364,7 @@ class melanie2_moncompte extends rcube_plugin {
    */
   public function resources_contacts_init() {
     try {
-      $id = get_input_value('_id', RCUBE_INPUT_GPC);
+      $id = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
       if (isset($id)) {
         $id = str_replace('_-P-_', '.', $id);
         // Instancie les objets Mélanie2
@@ -452,7 +450,7 @@ class melanie2_moncompte extends rcube_plugin {
   public function resources_tasks_init() {
 
     try {
-      $id = get_input_value('_id', RCUBE_INPUT_GPC);
+      $id = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
       if (isset($id)) {
         $id = str_replace('_-P-_', '.', $id);
         // Instancie les objets Mélanie2
@@ -550,8 +548,8 @@ class melanie2_moncompte extends rcube_plugin {
    * Création d'une nouvelle ressource Agendas/Contacts/Taches
    */
   public function add_resource() {
-    $name = get_input_value('_name', RCUBE_INPUT_POST);
-    $type = get_input_value('_type', RCUBE_INPUT_POST);
+    $name = rcube_utils::get_input_value('_name', RCUBE_INPUT_POST);
+    $type = rcube_utils::get_input_value('_type', RCUBE_INPUT_POST);
     $ret = false;
 
     if ($type == 'agendas') {
@@ -579,8 +577,8 @@ class melanie2_moncompte extends rcube_plugin {
    * Suppression de la ressource sélectionnée Agenda/Contacts/Tâches
    */
   public function delete_resource() {
-    $id = get_input_value('_id', RCUBE_INPUT_POST);
-    $type = get_input_value('_type', RCUBE_INPUT_POST);
+    $id = rcube_utils::get_input_value('_id', RCUBE_INPUT_POST);
+    $type = rcube_utils::get_input_value('_type', RCUBE_INPUT_POST);
 
     $ret = false;
 
@@ -609,8 +607,8 @@ class melanie2_moncompte extends rcube_plugin {
    * Masquer la ressource dans roundcube
    */
   public function hide_resource_roundcube() {
-    $mbox = get_input_value('_mbox', RCUBE_INPUT_POST);
-    $type = get_input_value('_type', RCUBE_INPUT_POST);
+    $mbox = rcube_utils::get_input_value('_mbox', RCUBE_INPUT_POST);
+    $type = rcube_utils::get_input_value('_type', RCUBE_INPUT_POST);
 
     if (isset($mbox) && isset($type)) {
       $conf_name = 'hidden_' . $type . 's';
@@ -630,8 +628,8 @@ class melanie2_moncompte extends rcube_plugin {
    * Afficher la ressource dans roundcube
    */
   public function show_resource_roundcube() {
-    $mbox = get_input_value('_mbox', RCUBE_INPUT_POST);
-    $type = get_input_value('_type', RCUBE_INPUT_POST);
+    $mbox = rcube_utils::get_input_value('_mbox', RCUBE_INPUT_POST);
+    $type = rcube_utils::get_input_value('_type', RCUBE_INPUT_POST);
 
     if (isset($mbox) && isset($type)) {
       $conf_name = 'hidden_' . $type . 's';
@@ -653,8 +651,8 @@ class melanie2_moncompte extends rcube_plugin {
   public function no_synchro_on_mobile() {
 
     try {
-      $mbox = get_input_value('_mbox', RCUBE_INPUT_POST);
-      $type = get_input_value('_type', RCUBE_INPUT_POST);
+      $mbox = rcube_utils::get_input_value('_mbox', RCUBE_INPUT_POST);
+      $type = rcube_utils::get_input_value('_type', RCUBE_INPUT_POST);
 
       if (isset($mbox) && isset($type)) {
         // Instancie les objets Mélanie2
@@ -717,8 +715,8 @@ class melanie2_moncompte extends rcube_plugin {
    */
   public function synchro_on_mobile() {
     try {
-      $mbox = get_input_value('_mbox', RCUBE_INPUT_POST);
-      $type = get_input_value('_type', RCUBE_INPUT_POST);
+      $mbox = rcube_utils::get_input_value('_mbox', RCUBE_INPUT_POST);
+      $type = rcube_utils::get_input_value('_type', RCUBE_INPUT_POST);
 
       if (isset($mbox) && isset($type)) {
         // Instancie les objets Mélanie2
@@ -793,8 +791,8 @@ class melanie2_moncompte extends rcube_plugin {
    */
   public function set_default_resource() {
     try {
-      $mbox = get_input_value('_mbox', RCUBE_INPUT_POST);
-      $type = get_input_value('_type', RCUBE_INPUT_POST);
+      $mbox = rcube_utils::get_input_value('_mbox', RCUBE_INPUT_POST);
+      $type = rcube_utils::get_input_value('_type', RCUBE_INPUT_POST);
 
       if (isset($mbox) && isset($type)) {
         // Instancie les objets Mélanie2

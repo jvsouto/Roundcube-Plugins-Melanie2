@@ -57,7 +57,7 @@ class Moncompte {
 	 */
 	public function init()
 	{
-		$fid = get_input_value('_fid', RCUBE_INPUT_GPC);
+		$fid = rcube_utils::get_input_value('_fid', RCUBE_INPUT_GPC);
 		if (isset($fid)) {
 
 			$this->rc->output->add_handler('moncompte_balp_list', array($this, 'moncompte_balp_list'));
@@ -799,7 +799,7 @@ class Moncompte {
 	 */
 	public function uploadCSVMembers() {
 
-		$dn_list = get_input_value('_dn_list', RCUBE_INPUT_POST);
+		$dn_list = rcube_utils::get_input_value('_dn_list', RCUBE_INPUT_POST);
 
 		if (isset($dn_list) && $this->isOwnerListe($dn_list)) {
 			if ($filepath = $_FILES['_listes_csv']['tmp_name']) {

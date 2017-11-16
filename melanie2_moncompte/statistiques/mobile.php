@@ -55,13 +55,22 @@ class Mobile_Stats {
         // Connexion au web service zpush
         try {
             $user = $this->rc->get_user_name();
+            // Stream context pour les problèmes de certificat
+            $streamContext = stream_context_create(array(
+                'ssl' => array(
+                    'verify_peer'       => false,
+                    'verify_peer_name'  => false,
+                    'allow_self_signed' => true
+                )
+            ));
             // Connexion au serveur de webservice
             $this->client = new SoapClient(null,
                     array(
-                        'location'   =>  $this->rc->config->get('ws_zp') . "?Cmd=WebserviceDevice&User=$user&DeviceId=webservice&DeviceType=webservice",
-                        'uri'       =>  "http://z-push.sf.net/webservice",
-                        'login'     =>  $user,
-                        'password'  =>  $this->rc->get_user_password()
+                        'location'        =>  $this->rc->config->get('ws_zp') . "?Cmd=WebserviceDevice&User=$user&DeviceId=webservice&DeviceType=webservice",
+                        'uri'             =>  "http://z-push.sf.net/webservice",
+                        'login'           =>  $user,
+                        'password'        =>  $this->rc->get_user_password(),
+                        'stream_context'  =>  $streamContext,
                     )
             );
         }

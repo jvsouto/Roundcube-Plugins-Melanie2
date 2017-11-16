@@ -355,7 +355,7 @@ class M2contacts {
    * Handler for ACL form template object
    */
   public function acl_form() {
-    $id = get_input_value('_id', RCUBE_INPUT_GPC);
+    $id = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
     $options = array('type' => 'm2contacts','name' => $id,'attributes' => array(0 => '\\HasNoChildren'),'namespace' => 'personal','special' => false,'rights' => array(0 => 'l',1 => 'r',2 => 's',3 => 'w',4 => 'i',5 => 'p',6 => 'k',7 => 'x',8 => 't',9 => 'e',10 => 'c',11 => 'd',12 => 'a'),'norename' => false,'noselect' => false,'protected' => true);
 
     $form = array();
@@ -376,7 +376,7 @@ class M2contacts {
    * @return string
    */
   public function acl_frame($attrib) {
-    $id = get_input_value('_id', RCUBE_INPUT_GPC);
+    $id = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
     if (! $attrib['id'])
       $attrib['id'] = 'rcmusersaclframe';
 
@@ -396,7 +396,7 @@ class M2contacts {
       $attrib['id'] = 'rcmExportForm';
 
     $html = '';
-    $id = get_input_value('_id', RCUBE_INPUT_GPC);
+    $id = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
     $id = str_replace('_-P-_', '.', $id);
     $hidden = new html_hiddenfield(array('name' => 'contacts','id' => 'event-export-contacts','value' => $id));
     $html .= $hidden->show();
@@ -434,7 +434,7 @@ class M2contactsgroup extends M2contacts {
    * Handler for ACL form template object
    */
   public function acl_form() {
-    $id = get_input_value('_id', RCUBE_INPUT_GPC);
+    $id = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
     $options = array('type' => 'm2contactsgroup','name' => $id,'attributes' => array(0 => '\\HasNoChildren'),'namespace' => 'personal','special' => false,'rights' => array(0 => 'l',1 => 'r',2 => 's',3 => 'w',4 => 'i',5 => 'p',6 => 'k',7 => 'x',8 => 't',9 => 'e',10 => 'c',11 => 'd',12 => 'a'),'norename' => false,'noselect' => false,'protected' => true);
 
     $form = array();
@@ -455,7 +455,7 @@ class M2contactsgroup extends M2contacts {
    * @return string
    */
   public function acl_frame($attrib) {
-    $id = get_input_value('_id', RCUBE_INPUT_GPC);
+    $id = rcube_utils::get_input_value('_id', RCUBE_INPUT_GPC);
     if (! $attrib['id'])
       $attrib['id'] = 'rcmusersaclframe';
 
