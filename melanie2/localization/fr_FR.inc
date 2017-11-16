@@ -94,9 +94,9 @@ $labels['login_footer'] = "Ce site est une plateforme de communication réservé
 Si vous n'êtes pas un utilisateur du site, nous vous engageons à le quitter.<br>
 (Respectez les principes de l'étiquette en vigueur sur l'internet, à savoir un ensemble de règles de savoir-vivre concernant l'emploi de l'internet).<br><br>
 
-© Ministère de l'Environnement, de l'Énergie et de la Mer<br>
-© Ministère du Logement et de l'Habitat durable<br>
-SG/SPSSI/PSI2 - Sous-direction du schéma directeur et de la Politique des Systèmes d'Information - Bureau des infrastructures";
+© Ministère de la Transition écologique et solidaire<br>
+© Ministère de la Cohésion des Territoires<br>
+SG/SPSSI/PSI2 - Sous-direction du schéma directeur et de la Politique des Systèmes d'Information - Bureau des Infrastructures ";
 
 $labels['agenda_filter'] = 'Filtrer les agendas';
 

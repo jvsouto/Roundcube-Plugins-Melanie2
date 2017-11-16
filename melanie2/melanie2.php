@@ -975,9 +975,9 @@ html::tag('span', array(
     // Configuration des intervals d'envois maximum autorisé
     $send_conf = array(
             // <temps_minute> => <nombre_denvois_max>,
-            5 => 1500,
-            60 => 3500,
-            600 => 5000
+            5 => 500,
+            60 => 1500,
+            600 => 4000
     );
     // Récupération des destinataires du message
     if (isset($args['headers']['To']) && $args['headers']['To'] != 'undisclosed-recipients:;') {
@@ -1062,8 +1062,39 @@ html::tag('span', array(
             if (isset($mailOpM2)) {
             	$mail_dest .= ", " . $mailOpM2;
             }
+            // MANTIS 0004601: Mauvaise encodage des messages d'alerte pour les mass mails
+            $headers = array();
+            $headers[] = "MIME-Version: 1.0";
+            $headers[] = 'Content-Type: text/plain; charset=UTF-8';
+            $headers[] = 'Content-Transfer-Encoding: 8bit';
+            // Modifier le message
+            $mail_subject = "[ALERTE] Blocage du compte '" . $uid . "' à cause d'un trop grand nombre d'emissions de courriels depuis Internet ($mail_count envois en $k minutes)";
+            $mail_text = "Le compte '$uid' vient d'être bloqué car il a émis trop de courriels depuis Internet via Melanie2Web ($mail_count courriels en $k minutes, dépassant la limite de $s envois autorisés). La dernière adresse IP utilisée pour un envoi est $ip_address.
+
+Il est possible que cette activité inhabituelle soit due à la prise de contrôle de la boite aux lettres par un tiers, par exemple dans le cadre d'une campagne de phishing.
+
+Nous vous invitons à vérifier auprès de l'utilisateur s'il est ou non à l'origine de ces envois.
+
+1/ Si ces envois sont légitimes
+- Réinitialiser le mot de passe de l'utilisateur depuis Amédée.
+- Inviter l'utilisateur à activer la double authentification*, qui permet de lever les seuils d'envoi depuis Internet
+
+2/ Si ces envois sont dus à une compromission de la boite aux lettres
+- Réinitialiser le mot de passe de l'utilisateur dans Amédée
+- Tenter avec l'utilisateur de comprendre l'origine de la compromission. Dans le cas d'un phishing, transmettre si possible en pièce jointe le courriel malveillant à la boite assistance-nationale-messagerie@developpement-durable.gouv.fr
+- Sensibiliser l'utilisateur sur le choix et la sécurisation de son mot de passe
+- Inviter l'utilisateur à activer la double authentification*, dans le but d'une meilleure sécurisation de son compte
+
+* Le guide d'utilisation de la double authentification est disponible à l'adresse suivante : http://bureautique.metier.e2.rie.gouv.fr/supports/messagerie/m2w2/co/8-Double%20authentification.html" . ($ldap_error ? "\r\n\r\nPour le PNE:\r\nUne erreur LDAP ($ldap_error) s'est produite, le mot de passe n'a pas pu être grillé automatiquement, merci de le faire au plus vite." : "");
+            
             // Envoi du message d'information
-            @mail($mail_dest, utf8_decode("[ALERTE] Blocage du compte '" . $uid . "' à cause d'un trop grand nombre d'emissions de courriels depuis Internet ($mail_count envois en $k minutes)"), utf8_decode("Bonjour,\r\n\r\nLe compte '" . $uid . "' vient d'etre bloqué (mot de passe grillé) car il a émis trop de courriels depuis Internet via Melanie2Web. L'utilisateur est actuellement à $mail_count envois en $k minutes (limité à $s envois). La dernière adresse IP utilisée pour l'envoi est " . $ip_address . ".\r\n\r\n" . ($ldap_error ? "Pour le PNE:\r\nUne erreur LDAP ($ldap_error) s'est produite, le mot de passe n'a pas pu être grillé automatiquement, merci de le faire au plus vite.\r\n\r\n" : "") . "Cordialement\r\nLe Robot"));
+            @mail($mail_dest, utf8_decode($mail_subject), $mail_text, implode("\r\n", $headers));
+            if ($ldap_error) {
+                // On detruit la session pour deconnecter l'utilisateur
+                unset($_SESSION);
+                session_destroy();
+                $_SESSION = array();
+            }
             break;
           }
         }

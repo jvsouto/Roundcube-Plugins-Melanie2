@@ -1,17 +1,142 @@
-RoundCube - Version 1.3.4
-RoundCube - Build 1608081205
+RoundCube - Version 1.4.3.1
+RoundCube - Build 20171110115152
 RoundCube - Liste des changements
+
+RoundCube - 1.4.3.1 (Pas encore publiée) [ Afficher les bogues ]
+========================================
+- 0004726: [Général] Passer en Roundcube 1.2.7 (thomas.payen) - résolu.
+
+[1 bogue]
+
+RoundCube - 1.4.3 (Publiée 06/11/2017) [ Afficher les bogues ]
+======================================
+- 0004701: [Général] Passer en Roundcube 1.2.6 (thomas.payen) - résolu.
+- 0004255: [Agenda] Corriger des erreurs dans les logs (thomas.payen) - résolu.
+- 0003676: [Agenda] Problème d'index dans la base de données de restauration (thomas.payen) - résolu.
+- 0004558: [Mail] Régles Sieve Horde non reprises par RC, Une erreur est survenue ! (thomas.payen) - résolu.
+- 0004702: [Agenda] Bloquer l'utilisation de la table itipinvitation (thomas.payen) - résolu.
+
+[5 bogues]
+
+RoundCube - 1.4.2 (Pas encore publiée) [ Afficher les bogues ]
+======================================
+- 0004653: [Roundpad] Le "propriétaire" est obligatoire en modif, mais pas en création (thomas.payen) - résolu.
+- 0004562: [Agenda] Doublon sur la première occurrence d'un évènement réccurrent (thomas.payen) - résolu.
+- 0004573: [Agenda] Suppression de ttes les occurrences pour les participants alors qu'une seule était supprimée (thomas.payen) - résolu.
+- 0004561: [Etiquettes] Recréer les 5 étiquettes par défaut si elles n'existent pas (thomas.payen) - résolu.
+- 0004563: [Mail] La modification de la description d'un rdv n'est pas visible dans le mail de notification via roundcube (thomas.payen) - résolu.
+- 0004570: [Mes ressources] partage de l'agenda, sélection de l'agent impossible avec les flèches du clavier (thomas.payen) - résolu.
+- 0004662: [Mes ressources] Flèches "Haut -Bas" du clavier inopérentes pour la sélection dans la liste déroulante (thomas.payen) - résolu.
+- 0004601: [Mail] Mauvaise encodage des messages d'alerte pour les mass mails (thomas.payen) - résolu.
+- 0004543: [Général] Script de déploiement sur Github (thomas.payen) - résolu.
+- 0004569: [Général] Ajouter l'extension csv_export pour l'export des contacts en CSV (thomas.payen) - fermé.
+- 0004548: [Skin mobile] Ne pas mettre le lien supprimer les pièces jointes en mobile (thomas.payen) - fermé.
+- 0004547: [Général] Passage en Roundcube 1.2.5 (thomas.payen) - fermé.
+- 0004539: [Messagerie instantanée] Intégrer Ariane à Melanie2Web (thomas.payen) - fermé.
+
+[13 bogues]
+
+RoundCube - 1.4.1.1 (Publiée 09/08/2017) [ Afficher les bogues ]
+========================================
+- 0004654: [Général] Le changement de mdp sans BALI ne fonctionne pas (thomas.payen) - résolu.
+- 0004651: [Carnet d'adresses] L'import ne fonctionne pas correctement pour les groupes (thomas.payen) - résolu.
+- 0004650: [Mon compte] Problème de lecture des informations après l'enregistrement (thomas.payen) - résolu.
+- 0004646: [Général] Modifier les appels aux service Web pour la gestion des certificats (thomas.payen) - résolu.
+- 0004625: [Aide] Modifier le libellé du ministère (thomas.payen) - résolu.
+- 0004592: [Général] Changment de ministère - Changement de bandeau (thomas.payen) - résolu.
+
+[6 bogues]
+
+RoundCube - 1.4.1 (Publiée 29/05/2017) [ Afficher les bogues ]
+======================================
+- 0004571: [Général] HOTFIX (thomas.payen) - résolu.
+- 0004492: [Général] Passage en Roundcube 1.2.4 (thomas.payen) - résolu.
+- 0004453: [Agenda] Import sans uid (thomas.payen) - résolu.
+- 0004480: [Mon compte] autorisation GCU aux BAL mais si pas de compte bureautique (laurent.beroujon) - résolu.
+- 0004483: [Double auth] La double authentification n'est pas loguée (thomas.payen) - fermé.
+- 0004441: [Agenda] Le téléchargement des pièces jointes ne fonctionne pas pour une réunion (thomas.payen) - fermé.
+- 0004513: [Carnet d'adresses] Changer le type d'adresse ne supprime l'ancienne (thomas.payen) - fermé.
+- 0003848: [Agenda] Présentation d'un événement avec des participants (thomas.payen) - fermé.
+- 0004540: [Agenda] Afficher l'url de l'agenda CalDAV (thomas.payen) - fermé.
+- 0003640: [Agenda] Dans le event show, le statut des participants serait mieux en début de ligne (thomas.payen) - fermé.
+- 0004466: [Agenda] Ajouter un bouton pour rafraichir l'agenda (thomas.payen) - fermé.
+
+[11 bogues]
+
+RoundCube - 1.4.0.2 (Publiée 23/03/2017) [ Afficher les bogues ]
+========================================
+- 0004500: [Général] La dernière mise a jour a entraîné des effets de bord dans les règles Sieve (thomas.payen) - résolu.
+
+[1 bogue]
+
+RoundCube - 1.4.0.1 (Publiée 23/03/2017) [ Afficher les bogues ]
+========================================
+- 0004498: [Etiquettes] Le gestion des étiquettes d'une balp choisie dans la liste depuis une bali semble ne pas marcher (thomas.payen) - résolu.
+- 0004501: [Général] Ré activation des filtres HORDE (thomas.payen) - résolu.
+
+[2 bogues]
+
+RoundCube - 1.4 (Publiée 09/03/2017) [ Afficher les bogues ]
+====================================
+- 0004276: [Mail] Reponse avec sa bali depuis une balp, quels "Elements envoyés" utiliser (thomas.payen) - résolu.
+- 0004208: [Carnet d'adresses] La recherche avec caractères spéciaux échoue (thomas.payen) - résolu.
+- 0003664: [Général] Mettre en place des raccourcis clavier (thomas.payen) - résolu.
+- 0004420: [Etiquettes] Toujours lister les étiquettes de la BALI (thomas.payen) - résolu.
+- 0004387: [Général] Avertir les adm Amédée lors des blocages de comptes (thomas.payen) - résolu.
+- 0004397: [Roundpad] Améliorer les messages d'erreur (thomas.payen) - résolu.
+- 0004559: [Agenda] La restauration de l'agenda avec Mélanie2web donne un fichier vide (thomas.payen) - fermé.
+- 0004369: [Général] Passage en Roundcube 1.2.3 (thomas.payen) - fermé.
+- 0004388: [Double auth] Ne pas faire de blocage sur envois massifs depuis Internet si l'auth s'est faite avec la double auth (thomas.payen) - fermé.
+- 0004131: [Mail] Le changement de l'adresse mail d'émission ne change pas la BAL sélectionnée (thomas.payen) - fermé.
+- 0004398: [Roundpad] Ajouter un tooltip sur l'url (thomas.payen) - fermé.
+- 0004401: [Roundpad] Ajouter un bouton supprimer le dossier et renommer le dossier dans la toolbar (thomas.payen) - fermé.
+- 0004400: [Roundpad] Bloquer la possibilité de créer deux Pad avec un nom identique (thomas.payen) - fermé.
+- 0004399: [Roundpad] Ajouter un message lorsque le fichier ne peut pas être enregistré (thomas.payen) - fermé.
+- 0004396: [Carnet d'adresses] Utiliser le code pays pour l'adresse d'un contact (thomas.payen) - fermé.
+- 0004352: [Agenda] Permettre la création d'un sondage Pégase, directement depuis la fenêtre de l'événement (thomas.payen) - fermé.
+- 0004361: [Mes applications] Mettre à jour l'url de melanissimo (thomas.payen) - fermé.
+- 0004409: [Roundpad] Ajouter un bouton d'aide (thomas.payen) - fermé.
+- 0004383: [Agenda] Perte du rappel sur un événement (thomas.payen) - fermé.
+- 0004416: [Mes ressources] Positionner le droit Lecture devrait automatiquement sélectionner Afficher (thomas.payen) - fermé.
+- 0004235: [Agenda] Coquille dans l'affichage d'un RDV (thomas.payen) - fermé.
+- 0004435: [Etiquettes] Gestion des couleurs des étiquettes compatible avec le courrielleur (thomas.payen) - fermé.
+- 0004425: [Etiquettes] Limiter l'édition des étiquettes aux boites dont on est gestionnaires (thomas.payen) - fermé.
+- 0004421: [Etiquettes] Dans la gestion des étiquettes ajouter la possible de changer de boite (thomas.payen) - fermé.
+
+[24 bogues]
+
+RoundCube - 1.3.5 (Publiée 12/09/2016) [ Afficher les bogues ]
+======================================
+- 0004358: [Général] Vérifier que lors des erreurs de cht de mot de passe par wsAmande l'explication est bien remontée à l'utilisateur (thomas.payen) - résolu.
+- 0004346: [Carnet d'adresses] La restauration des contacts ne fonctionne plus (thomas.payen) - résolu.
+- 0004328: [Général] L'url de login n'est pas conservé (thomas.payen) - résolu.
+- 0004155: [Mail] Gestion des étiquettes avec le Courrielleur (thomas.payen) - résolu.
+- 0004229: [Mail] Une étiquette avec caractères accentués créé dans le courrielleur s'affiche mal dans Roundcube (thomas.payen) - résolu.
+- 0004241: [Général] Passage en Roundcube 1.2 (thomas.payen) - résolu.
+- 0004310: [Mail] Participant en double lorsque sa participation est mise à jour depuis le mail de réponse (thomas.payen) - résolu.
+- 0004214: [Service web Mélanissimo] Paramétrisation seuil déclenchement envoi via Mélanissimo (thomas.payen) - résolu.
+- 0004236: [Carnet d'adresses] RC permet de créer des groupes de même nom (thomas.payen) - résolu.
+- 0004314: [Carnet d'adresses] Export des contacs comportement aléatoire (thomas.payen) - résolu.
+- 0004261: [Mes ressources] Trier les boites dans l'ordre alphabetique (thomas.payen) - résolu.
+- 0004213: [Agenda] Traduction manquante (thomas.payen) - résolu.
+- 0004211: [Agenda] Nouvelle liste déroulante dans le rappel d'un événement (thomas.payen) - résolu.
+- 0003871: [Mon compte] Correction dans le texte. (laurent.beroujon) - résolu.
+
+[14 bogues]
 
 RoundCube - 1.3.4 (Publiée 08/08/2016) [ Afficher les bogues ]
 ======================================
+- 0004378: [ownCloud] Limite d'upload à remonter à 10Mo (thomas.payen) - résolu.
+- 0004252: [Agenda] Problème dans les modifications d'occurrence avec le courrielleur (thomas.payen) - résolu.
+- 0004308: [Mon compte] Gestionnaire d'absence, prise en compte de la saisie 'jj/mm/aaaa' (laurent.beroujon) - résolu.
 - 0004306: [ownCloud] Le filtre pour l'affichage du drive n'est pas bon (thomas.payen) - résolu.
 - 0004300: [Mail] Problème lors de la modification des headers pour le butineur (thomas.payen) - résolu.
 - 0004284: [Agenda] Problème d'utilisateur pour les attributs (thomas.payen) - résolu.
-- 0004252: [Agenda] Problème dans les modifications d'occurrence avec le courrielleur (thomas.payen) - résolu.
 - 0004285: [Agenda] Modifier une occurrence déjà modifié supprime l'événement maitre (thomas.payen) - résolu.
 - 0004281: [Agenda] La suppression d'une occurrence modifié supprime l'événement maitre (thomas.payen) - résolu.
+- 0004375: [Mon compte] La fenêtre de changement de mot de passe n'affiche pas tout le texte (thomas.payen) - fermé.
 
-[6 bogues]
+[9 bogues]
 
 RoundCube - 1.3.3 (Publiée 22/05/2016) [ Afficher les bogues ]
 ======================================
