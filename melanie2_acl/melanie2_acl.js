@@ -380,7 +380,10 @@ rcube_webmail.prototype.acl_init_form = function(id)
     for (var key in this.env.acl_objects[val])  {
     	$('input[value="'+this.env.acl_objects[val][key]+'"]').prop('checked', true);
     }
-
+    // Mantis 4894 disable la gestion pour les bal Agri
+	if (this.env.ministere == 'agri') {
+		$('input[value="g"]').prop('disabled', true);
+	}
     this.acl_id = id;
 
     var buttons = {}, me = this, body = document.body;

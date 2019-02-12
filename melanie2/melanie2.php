@@ -17,10 +17,6 @@
  * with this program; if not, write to the Free Software Foundation, Inc.,
  * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  */
-// Configuration du nom de l'application pour l'ORM
-if (! defined('CONFIGURATION_APP_LIBM2')) {
-  define('CONFIGURATION_APP_LIBM2', 'roundcube');
-}
 // Chargement de la librairie Melanie2
 @include_once 'includes/libm2.php';
 
@@ -97,10 +93,7 @@ class melanie2 extends rcube_plugin {
     // Mise à jour de la version
     include_once __DIR__ . '/../../version.php';
     self::$VERSION .= " " . Version::VERSION;
-    
-    if (melanie2_logs::is(melanie2_logs::DEBUG))
-      melanie2_logs::get_instance()->log(melanie2_logs::DEBUG, "melanie2::init()");
-      // Définition des hooks
+    // Définition des hooks
     $this->add_hook('authenticate', array(
             $this,
             'authenticate'
@@ -228,9 +221,7 @@ class melanie2 extends rcube_plugin {
     if ($this->ui_initialized) {
       return;
     }
-    if (melanie2_logs::is(melanie2_logs::DEBUG))
-      melanie2_logs::get_instance()->log(melanie2_logs::DEBUG, "melanie2::init_ui()");
-      // load localization
+    // load localization
     $this->add_texts('localization/', true);
     $this->include_script('melanie2.js');
     $this->include_stylesheet($this->local_skin_path() . '/melanie2.css');
@@ -481,6 +472,14 @@ html::tag('span', array(
     $this->set_defaults_folders();
     $this->ui_initialized = true;
   }
+  
+  /**
+   * Force un account différent si besoin
+   * @param string $_account
+   */
+  public function set_account($_account) {
+    $this->get_account = $_account;
+  }
 
   /**
    * Permet de récupérer l'account courant
@@ -586,7 +585,7 @@ html::tag('span', array(
    * Rafraichissement de la liste des dossiers dans la page compose
    */
   public function refresh_store_target_selection() {
-    $unlock = rcube_utils::get_input_value('_unlock', RCUBE_INPUT_GET);
+    $unlock = rcube_utils::get_input_value('_unlock', rcube_utils::INPUT_GET);
 
     $attrib = array(
             'name'      => '_store_target',
@@ -785,6 +784,8 @@ html::tag('span', array(
     else {
       // Récupération des données de l'utilisateur depuis le cache
       $infos = self::get_user_infos($user);
+      // MANTIS 0004868: Permetttre la connexion M2web avec l'adresse mail comme identifiant
+      $args['user'] = $infos['uid'][0];
       if (LibMelanie\Ldap\Ldap::GetInstance(LibMelanie\Config\Ldap::$AUTH_LDAP)->authenticate($infos['dn'], $pass)) {
         $auth_ok = true;
         // Ne lister que les bal qui ont l'accès internet activé si l'accés se fait depuis Internet
@@ -1586,7 +1587,12 @@ Nous vous invitons à vérifier auprès de l'utilisateur s'il est ou non à l'or
     if (! isset($cache['users_infos'])) {
       $cache['users_infos'] = array();
     }
-    $cache['users_infos'][$username] = LibMelanie\Ldap\Ldap::GetUserInfos($username);
+    if (strpos($username, '@') === false) {
+      $cache['users_infos'][$username] = LibMelanie\Ldap\Ldap::GetUserInfos($username);
+    }
+    else {
+      $cache['users_infos'][$username] = LibMelanie\Ldap\Ldap::GetUserInfosFromEmail($username);
+    }    
     self::SetM2Cache($cache);
     return $cache;
   }

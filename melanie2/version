@@ -1,8 +1,22 @@
-RoundCube - Version 1.4.3.1
-RoundCube - Build 20171110115152
+RoundCube - Version 1.4.4
+RoundCube - Build 20171220102452
 RoundCube - Liste des changements
 
-RoundCube - 1.4.3.1 (Pas encore publiée) [ Afficher les bogues ]
+RoundCube - 1.4.4 (Pas encore publiée) [ Afficher les bogues ]
+======================================
+- 0004779: [Général] Utilisation de l'ORM v0.4 (thomas.payen) - résolu.
+- 0004754: [Etiquettes] Choix de la couleur avec plusieurs etiquettes (thomas.payen) - résolu.
+- 0004764: [Général] Petits écrans, améliorer l'affichage (thomas.payen) - résolu.
+
+[3 bogues]
+
+RoundCube - 1.4.3.2 (Publiée 07/12/2017) [ Afficher les bogues ]
+========================================
+- 0004638: [Mon compte] Nouveau type de liste à prendre en compte (laurent.beroujon) - fermé.
+
+[1 bogue]
+
+RoundCube - 1.4.3.1 (Publiée 09/11/2017) [ Afficher les bogues ]
 ========================================
 - 0004726: [Général] Passer en Roundcube 1.2.7 (thomas.payen) - résolu.
 

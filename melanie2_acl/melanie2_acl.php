@@ -588,7 +588,7 @@ class melanie2_acl extends rcube_plugin
             	// PAMELA
                 if ($object->setAcl($user, $acl)) {
                     $js_table_objects[$user] = $objects;
-                    $ret = array('id' => html_identifier($user),
+                    $ret = array('id' => rcube_utils::html_identifier($user),
                          'username' => $username, 'acl' => implode($acl), 'old' => $oldid);
                     $this->rc->output->command('acl_update', $ret);
                     $result++;

@@ -34,6 +34,7 @@ $('html').click(function() {
 			sharemailboxeslist.addClass("sharesmailboxeshide")
 								.removeClass("sharesmailboxesshow");
 			$(".button-sharesmailboxes").removeClass("button-selected");
+			$("#folderlist-header-m2").removeClass("click");
 			$("#folderlist-header-m2 span").removeClass("click");
 		}
 		var sharemailboxeslist = $("#sharesmailboxeslist-settings");
@@ -42,6 +43,7 @@ $('html').click(function() {
 								.removeClass("sharesmailboxesshow");
 			$(".button-sharesmailboxes").removeClass("button-selected");
 			$("#folderlist-header-m2-settings span").removeClass("click");
+			$("#folderlist-header-m2-settings").removeClass("click");
 		}
 	}, 200);	
 });
@@ -55,12 +57,14 @@ $(document).on({
     		sharemailboxeslist.addClass("sharesmailboxeshide")
     							.removeClass("sharesmailboxesshow");
     		$("#folderlist-header-m2 span").removeClass("click");
+    		$("#folderlist-header-m2").removeClass("click");
     		$(".button-sharesmailboxes").removeClass("button-selected");
     	}
     	else {
     		sharemailboxeslist.addClass("sharesmailboxesshow")
     							.removeClass("sharesmailboxeshide");
     		$("#folderlist-header-m2 span").addClass("click");
+    		$("#folderlist-header-m2").addClass("click");
     		$(".button-sharesmailboxes").addClass("button-selected");
     	}
     }
@@ -75,12 +79,14 @@ $(document).on({
     		sharemailboxeslist.addClass("sharesmailboxeshide")
     							.removeClass("sharesmailboxesshow");
     		$("#folderlist-header-m2-settings span").removeClass("click");
+    		$("#folderlist-header-m2-settings").removeClass("click");
     		$(".button-sharesmailboxes").removeClass("button-selected");
     	}
     	else {
     		sharemailboxeslist.addClass("sharesmailboxesshow")
     							.removeClass("sharesmailboxeshide");
     		$("#folderlist-header-m2-settings span").addClass("click");
+    		$("#folderlist-header-m2-settings").addClass("click");
     		$(".button-sharesmailboxes").addClass("button-selected");
     	}
     }
@@ -171,6 +177,8 @@ if (window.rcmail) {
 		    // PAMELA - Masquer les champs non utilisés dans Mélanie2
 		    $('#edit-url').parent().hide();
 		    $('#edit-priority').parent().hide();
+		    $('#edit-free-busy').parent().hide();
+		    $('#event-free-busy').hide();
 		    $('.edit-alarm-buttons').hide();
 		    $("#edit-sensitivity option[value='confidential']").remove();
 		    $("#edit-recurrence-frequency option[value='RDATE']").remove();

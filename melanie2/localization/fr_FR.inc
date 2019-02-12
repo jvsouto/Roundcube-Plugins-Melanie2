@@ -84,9 +84,9 @@ $labels['name identity'] = 'Nom affiché dans le webmail';
 
 $labels['error_block'] = 'Echec de connexion, votre compte est bloqué';
 
-$labels['computer_private'] = 'Cet ordinateur est privé';
-$labels['device_private'] = 'Cet appareil est privé';
-$labels['computer_private_title'] = 'Le nom d\'utilisateur sera enregistré sur cette machine pour faciliter les prochaines connexions';
+$labels['computer_private'] = 'Enregistrer mes informations d\'identification sur cet ordinateur';
+$labels['device_private'] = 'Enregistrer mes informations d\'identification sur cet ordinateur';
+$labels['computer_private_title'] = 'Le nom d\'utilisateur ainsi que les codes de double authentification ne vous seront plus demandés lors de vos prochaines connexions depuis cet ordinateur, \nNe cochez pas cette case s\'il s\'agit d\'un ordinateur public.';
 $labels['change_user'] = 'Changer d\'utilisateur';
 
 $labels['login from'] = "Connexion depuis : ";
@@ -95,7 +95,8 @@ Si vous n'êtes pas un utilisateur du site, nous vous engageons à le quitter.<b
 (Respectez les principes de l'étiquette en vigueur sur l'internet, à savoir un ensemble de règles de savoir-vivre concernant l'emploi de l'internet).<br><br>
 
 © Ministère de la Transition écologique et solidaire<br>
-© Ministère de la Cohésion des Territoires<br>
+© Ministère de la Cohésion des territoires et des Relations avec les collectivités territoriales<br>
+© Ministère de l'Agriculture et de l'Alimentation<br>
 SG/SPSSI/PSI2 - Sous-direction du schéma directeur et de la Politique des Systèmes d'Information - Bureau des Infrastructures ";
 
 $labels['agenda_filter'] = 'Filtrer les agendas';
